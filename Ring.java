@@ -8,8 +8,6 @@ public class Ring implements Network {
         createModel();
     }
 
-
-
     @Override
     public void createModel() {
         network = new Vertex[numberOfVertices];
@@ -20,7 +18,7 @@ public class Ring implements Network {
             if (i==0) {
                 network[i].addAjaceny(network[(network.length)-1]);
                 network[i].addAjaceny(network[i+1]);
-            } else if (i== network.length-1) {
+            } else if (i == network.length-1) {
                 network[i].addAjaceny(network[0]);
                 network[i].addAjaceny(network[i-1]);
             } else {
@@ -32,24 +30,24 @@ public class Ring implements Network {
 
     @Override
     public Vertex find(char sourceName, char destinationName) {
-        Vertex source = null, destionation = null;
+        Vertex source = null, destination = null;
         for (Vertex v: network) {
             if(v.getName() == sourceName) {
                 source = v;
             }
             if(v.getName() == destinationName) {
-                destionation = v;
+                destination = v;
             }
         }
-        if (source != null && destionation != null) {
+        if (source != null && destination != null) {
             source.setVisited(true);
-            destionation = depthFirstSearch(source, destionation);
+            destination = depthFirstSearch(source, destination);
             for (Vertex v: network) {
                 v.setVisited(false);
             }
-            return destionation;
+            return destination;
         }
-        throw new RuntimeException("Could not find vertex" + destinationName);
+        throw new VertexNotFoundException("Could not find vertex" + destinationName);
     }
 
     private Vertex depthFirstSearch(Vertex source, Vertex destination) {
@@ -63,7 +61,7 @@ public class Ring implements Network {
                 return depthFirstSearch(adjacency, destination);
             }
         }
-        throw new RuntimeException("Could not find vertex");
+        throw new VertexNotFoundException("Could not find vertex");
 
     }
 
